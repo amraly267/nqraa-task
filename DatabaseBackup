@@ -1,0 +1,129 @@
+-- MySQL Administrator dump 1.4
+--
+-- ------------------------------------------------------
+-- Server version	5.0.51b-community-nt
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+
+--
+-- Create schema nqraa_task
+--
+
+CREATE DATABASE IF NOT EXISTS nqraa_task;
+USE nqraa_task;
+
+--
+-- Definition of table `project_deductions`
+--
+
+DROP TABLE IF EXISTS `project_deductions`;
+CREATE TABLE `project_deductions` (
+  `id` int(11) NOT NULL auto_increment,
+  `project_id` int(11) NOT NULL,
+  `old_staff_deduction` double(11,2) default '0.00' COMMENT 'حسميات غياب او عدم تأمين الجهاز الفني القيمة السابقة',
+  `current_staff_deduction` double(11,2) default '0.00' COMMENT 'حسميات غياب او عدم تأمين الجهاز الفني القيمة الحالية',
+  `old_equipment_deduction` double(11,2) default '0.00' COMMENT 'حسميات غياب او عدم تأمين معدات وسيارات المشروع القيمة السابقة',
+  `current_equipment_deduction` double(11,2) default '0.00' COMMENT 'حسميات غياب او عدم تأمين معدات وسيارات المشروع القيمة الحالية',
+  `old_insurance_deduction` double(11,2) default '0.00' COMMENT ' حسميات عدم تأمين وسائل السلامة لتأمين مواقع العمل القيمة السابقة',
+  `current_insurance_deduction` double(11,2) default '0.00' COMMENT ' حسميات عدم تأمين وسائل السلامة لتأمين مواقع العمل القيمة الحالية',
+  `old_public_deduction` double(11,2) default '0.00' COMMENT 'حسميات عامة قيمة سابقة',
+  `current_public_deduction` double(11,2) default '0.00' COMMENT 'حسميات عامة قيمة حالية',
+  `old_delay_deduction` double(11,2) default '0.00' COMMENT 'حسميات غرامة تأخير قيمة سابقة',
+  `current_delay_deduction` double(11,2) default '0.00' COMMENT 'حسميات غرامة تأخير قيمة حالية',
+  `old_contract_value_deduction` double(11,2) default '0.00' COMMENT 'حسميات تخفيض العقد بنسبة 1% قيمة سابقة',
+  `current_contract_value_deduction` double(11,2) default '0.00' COMMENT 'حسميات تخفيض العقد بنسبة 1% قيمة حالية',
+  `old_reclaim_value_deduction` double(11,2) default '0.00' COMMENT 'حسم قيمة السلفة المقدمة بنسبة 0% قيمة سابقة',
+  `current_reclaim_value_deduction` double(11,2) default '0.00' COMMENT 'حسم قيمة السلفة المقدمة بنسبة 0% قيمة حالية',
+  `old_extracts_deduction` double(11,2) default '0.00' COMMENT 'حسم قيمة المستخلصات السابقة',
+  `contractor_net_fees` double(11,2) default '0.00' COMMENT 'صافي المبلغ المستحق للمقاول',
+  PRIMARY KEY  (`id`),
+  KEY `project_id_fk` (`project_id`),
+  CONSTRAINT `project_id_fk` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `project_deductions`
+--
+
+/*!40000 ALTER TABLE `project_deductions` DISABLE KEYS */;
+INSERT INTO `project_deductions` (`id`,`project_id`,`old_staff_deduction`,`current_staff_deduction`,`old_equipment_deduction`,`current_equipment_deduction`,`old_insurance_deduction`,`current_insurance_deduction`,`old_public_deduction`,`current_public_deduction`,`old_delay_deduction`,`current_delay_deduction`,`old_contract_value_deduction`,`current_contract_value_deduction`,`old_reclaim_value_deduction`,`current_reclaim_value_deduction`,`old_extracts_deduction`,`contractor_net_fees`) VALUES 
+ (1,1,1666.67,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,465786.01,14590.10,0.00,0.00,46111148.69,1444419.90);
+/*!40000 ALTER TABLE `project_deductions` ENABLE KEYS */;
+
+
+--
+-- Definition of table `project_follow_up`
+--
+
+DROP TABLE IF EXISTS `project_follow_up`;
+CREATE TABLE `project_follow_up` (
+  `id` int(11) NOT NULL auto_increment,
+  `project_id` int(11) NOT NULL,
+  `finished_works` double(4,2) default '0.00' COMMENT 'نسبة الاعمال المنفذة حتى تاريخه',
+  `old_finished_works` double(4,2) default '0.00' COMMENT 'نسبة الاعمال المنفذة في المستخلصات السابقة ',
+  `current_finished_works` double(4,2) default '0.00' COMMENT 'نسبة الاعمال المنفذة هذه الفترة',
+  `elapsed_duration` double(4,2) default '0.00' COMMENT 'نسبة المدة المنقضية حتى تاريخه',
+  PRIMARY KEY  (`id`),
+  KEY `project_id_followup_fk` (`project_id`),
+  CONSTRAINT `project_id_followup_fk` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `project_follow_up`
+--
+
+/*!40000 ALTER TABLE `project_follow_up` DISABLE KEYS */;
+INSERT INTO `project_follow_up` (`id`,`project_id`,`finished_works`,`old_finished_works`,`current_finished_works`,`elapsed_duration`) VALUES 
+ (1,1,71.64,69.46,2.18,0.07);
+/*!40000 ALTER TABLE `project_follow_up` ENABLE KEYS */;
+
+
+--
+-- Definition of table `projects`
+--
+
+DROP TABLE IF EXISTS `projects`;
+CREATE TABLE `projects` (
+  `id` int(11) NOT NULL auto_increment,
+  `project_name` varchar(255) default NULL COMMENT 'اسم المشروع',
+  `program_name` varchar(255) default NULL COMMENT 'اسم البرنامج',
+  `tender_number` int(11) default NULL COMMENT 'رقم المناقصة',
+  `supervising_authority` varchar(255) default NULL COMMENT 'الجهة المشرفة',
+  `end_date` date default NULL COMMENT 'تاريخ المقرر للاستلام الابتدائي',
+  `contract_value_after_reduction` double(11,2) default '0.00' COMMENT 'قيمة العقد بعد التخفيض',
+  `contract_value_after_increase` double(11,2) default '0.00' COMMENT 'قيمة العقد بعد الزيادة',
+  `contract_duration` int(11) default '0' COMMENT 'مدة العقد',
+  `start_date` date default NULL COMMENT 'تاريخ تسليم الموقع',
+  `contract_duration_extension` int(11) default NULL COMMENT 'تمديد مدة العقد',
+  `added_value` double(4,2) default '0.00' COMMENT 'القيمة المضافة بنسبة مئوية',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `projects`
+--
+
+/*!40000 ALTER TABLE `projects` DISABLE KEYS */;
+INSERT INTO `projects` (`id`,`project_name`,`program_name`,`tender_number`,`supervising_authority`,`end_date`,`contract_value_after_reduction`,`contract_value_after_increase`,`contract_duration`,`start_date`,`contract_duration_extension`,`added_value`) VALUES 
+ (1,'اسم المشروع','اسم البرنامج',15,'الادارة العامة للتشغيل والصيانة','2021-01-18',60349464.45,66384410.90,1095,'2016-12-18',397,5.00);
+/*!40000 ALTER TABLE `projects` ENABLE KEYS */;
+
+
+
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
